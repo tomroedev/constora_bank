@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">ConstoraBank</string>
+    <string name="login">Login</string>
+    <string name="home">Home</string>
+    <string name="create_account">Create Account</string>
+    <string name="continue_on">Continue</string>
+</resources>
