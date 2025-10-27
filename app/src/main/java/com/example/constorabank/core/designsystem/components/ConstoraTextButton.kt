@@ -3,26 +3,33 @@ package com.example.constorabank.core.designsystem.components
 import androidx.annotation.StringRes
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.constorabank.R
 import com.example.constorabank.core.designsystem.ConstoraBankTheme
 
 @Composable
-fun ConstoraTitleText(
+fun ConstoraTextButton(
     @StringRes textRes: Int,
+    onClick: () -> Unit
 ) {
-    Text(
-        text = stringResource(textRes),
-        style = MaterialTheme.typography.displayMedium
-    )
+    TextButton(onClick = onClick) {
+        Text(
+            stringResource(textRes),
+            style = MaterialTheme.typography.headlineSmall,
+            fontWeight = FontWeight.SemiBold
+        )
+    }
+
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
-private fun ConstoraTitleTextPreview() {
+private fun ConstoraTextButtonPreview() {
     ConstoraBankTheme {
-        ConstoraTitleText(R.string.preview_text)
+        ConstoraTextButton(textRes = R.string.sign_in) {}
     }
 }

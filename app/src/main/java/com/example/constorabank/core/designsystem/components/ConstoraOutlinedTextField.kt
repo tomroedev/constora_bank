@@ -4,16 +4,14 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.unit.dp
-import com.example.constorabank.core.designsystem.Accent100
+import androidx.compose.ui.tooling.preview.Preview
+import com.example.constorabank.core.designsystem.ConstoraBankTheme
+import com.example.constorabank.core.designsystem.Dimens
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ConstoraOutlinedTextField(
     value: String,
@@ -31,13 +29,22 @@ fun ConstoraOutlinedTextField(
         label = label,
         placeholder = placeholder,
         singleLine = true,
-        shape = RoundedCornerShape(12.dp),
-        colors = OutlinedTextFieldDefaults.colors(
-            focusedContainerColor = Accent100,
-            unfocusedContainerColor = Accent100
-        ),
+        shape = RoundedCornerShape(Dimens.CornerRadius),
         keyboardOptions = keyboardOptions,
         keyboardActions = keyboardActions,
         visualTransformation = visualTransformation
     )
+}
+
+@Preview(showBackground = true)
+@Composable
+fun ConstoraOutlinedTextFieldPreview() {
+    ConstoraBankTheme {
+        ConstoraOutlinedTextField(
+            value = "Some sample text",
+            onValueChange = {},
+            label = {},
+            placeholder = {}
+        )
+    }
 }

@@ -11,9 +11,7 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -23,23 +21,25 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.example.constorabank.R
 import com.example.constorabank.core.designsystem.ConstoraBankTheme
+import com.example.constorabank.core.designsystem.Dimens
 import com.example.constorabank.core.designsystem.components.ConstoraButton
 import com.example.constorabank.core.designsystem.components.ConstoraExtraSmallPromptText
 import com.example.constorabank.core.designsystem.components.ConstoraOutlinedTextField
 import com.example.constorabank.core.designsystem.components.ConstoraPage
 import com.example.constorabank.core.designsystem.components.ConstoraSubtitleText
+import com.example.constorabank.core.designsystem.components.ConstoraTextButton
 import com.example.constorabank.core.designsystem.components.ConstoraTitleText
 
-@OptIn(ExperimentalMaterial3Api::class)
+private const val MIN_PASSWORD_LENGTH = 8
+private const val EMAIL_MUST_CONTAIN = "@"
+
 @Composable
 fun CreateAccountScreen(
     onContinue: (email: String, password: String) -> Unit,
@@ -48,7 +48,8 @@ fun CreateAccountScreen(
     ConstoraBankTheme {
         var email by rememberSaveable { mutableStateOf("") }
         var password by rememberSaveable { mutableStateOf("") }
-        val isValid = email.contains("@") && password.length >= 8
+        val isValid = email.contains(EMAIL_MUST_CONTAIN)
+                && password.length >= MIN_PASSWORD_LENGTH
         val focusManager = LocalFocusManager.current
 
         ConstoraPage {
@@ -56,18 +57,18 @@ fun CreateAccountScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .statusBarsPadding()
-                    .padding(top = 32.dp),
+                    .padding(top = Dimens.PaddingMedium),
                 horizontalAlignment = Alignment.Start,
             ) {
-                ConstoraTitleText("Create account")
+                ConstoraTitleText(R.string.create_account)
 
-                Spacer(Modifier.height(24.dp))
+                Spacer(Modifier.height(Dimens.SpacerMedium))
 
                 ConstoraOutlinedTextField(
                     value = email,
                     onValueChange = { email = it },
-                    label = { Text("email") },
-                    placeholder = { Text("you@example.com") },
+                    label = { Text(stringResource(R.string.email)) },
+                    placeholder = { Text(stringResource(R.string.example_email)) },
                     keyboardOptions = KeyboardOptions(
                         keyboardType = KeyboardType.Email,
                         imeAction = ImeAction.Next
@@ -77,13 +78,13 @@ fun CreateAccountScreen(
                     )
                 )
 
-                Spacer(Modifier.height(12.dp))
+                Spacer(Modifier.height(Dimens.SpacerSmall))
 
                 ConstoraOutlinedTextField(
                     value = password,
                     onValueChange = { password = it },
-                    label = { Text("password") },
-                    placeholder = { Text("••••••••") },
+                    label = { Text(stringResource(R.string.password)) },
+                    placeholder = { Text(stringResource(R.string.placeholder_dots)) },
                     keyboardOptions = KeyboardOptions(
                         keyboardType = KeyboardType.Password,
                         imeAction = ImeAction.Done
@@ -97,13 +98,13 @@ fun CreateAccountScreen(
                     visualTransformation = PasswordVisualTransformation()
                 )
 
-                Spacer(Modifier.height(8.dp))
+                Spacer(Modifier.height(Dimens.SpacerSmall))
 
                 ConstoraExtraSmallPromptText(
-                    text = "8+ chars, mix upper/lower/number",
+                    text = R.string.password_requirements,
                 )
 
-                Spacer(Modifier.height(16.dp))
+                Spacer(Modifier.height(Dimens.SpacerMedium))
 
                 ConstoraButton(
                     onClick = { onContinue(email.trim(), password) },
@@ -116,19 +117,14 @@ fun CreateAccountScreen(
                     horizontalArrangement = Arrangement.Center,
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    ConstoraSubtitleText("Already have an account?")
+                    ConstoraSubtitleText(R.string.already_have_an_account)
 
-                    Spacer(Modifier.width(4.dp))
+                    Spacer(Modifier.width(Dimens.SpacerXs))
 
-                    TextButton(
+                    ConstoraTextButton(
+                        textRes = R.string.sign_in,
                         onClick = onSignInClick
-                    ) {
-                        Text(
-                            "Sign in",
-                            fontSize = 14.sp,
-                            fontWeight = FontWeight.SemiBold
-                        )
-                    }
+                    )
                 }
             }
         }
@@ -138,5 +134,8 @@ fun CreateAccountScreen(
 @Preview(showBackground = true)
 @Composable
 private fun CreateAccountPreview() {
-    CreateAccountScreen(onContinue = { _, _ -> }, onSignInClick = {})
+    CreateAccountScreen(
+        onContinue = { _, _ -> },
+        onSignInClick = {}
+    )
 }

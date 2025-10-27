@@ -4,4 +4,18 @@
     <string name="home">Home</string>
     <string name="create_account">Create Account</string>
     <string name="continue_on">Continue</string>
+    <string name="email">email</string>
+    <string name="example_email">you@example.com</string>
+    <string name="password">password</string>
+    <string name="placeholder_dots">••••••••</string>
+    <string name="password_requirements">8+ chars, mix upper/lower/number</string>
+    <string name="already_have_an_account">Already have an account?</string>
+    <string name="sign_in">Sign in</string>
+    <string name="login_screen">Login Screen</string>
+    <string name="welcome_to_constora">Welcome to Constora</string>
+    <string name="welcome_screen_tagline">Modern banking, minus the faff.</string>
+    <string name="i_already_have_an_account">I already have an account</string>
+    <string name="preview_text">Some sample text</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
 </resources>
