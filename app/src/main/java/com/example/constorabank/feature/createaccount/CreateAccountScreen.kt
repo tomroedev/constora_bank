@@ -15,7 +15,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -26,6 +26,8 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.constorabank.R
 import com.example.constorabank.core.designsystem.ConstoraBankTheme
 import com.example.constorabank.core.designsystem.Dimens
@@ -37,19 +39,16 @@ import com.example.constorabank.core.designsystem.components.ConstoraSubtitleTex
 import com.example.constorabank.core.designsystem.components.ConstoraTextButton
 import com.example.constorabank.core.designsystem.components.ConstoraTitleText
 
-private const val MIN_PASSWORD_LENGTH = 8
-private const val EMAIL_MUST_CONTAIN = "@"
-
 @Composable
 fun CreateAccountScreen(
     onContinue: (email: String, password: String) -> Unit,
     onSignInClick: () -> Unit,
+    viewModel: CreateAccountViewModel = hiltViewModel()
 ) {
     ConstoraBankTheme {
-        var email by rememberSaveable { mutableStateOf("") }
-        var password by rememberSaveable { mutableStateOf("") }
-        val isValid = email.contains(EMAIL_MUST_CONTAIN)
-                && password.length >= MIN_PASSWORD_LENGTH
+        val email by viewModel.email.collectAsStateWithLifecycle()
+        var password by remember { mutableStateOf("") }
+        val isValid = viewModel.areCredentialsValid(email, password)
         val focusManager = LocalFocusManager.current
 
         ConstoraPage {
@@ -66,7 +65,7 @@ fun CreateAccountScreen(
 
                 ConstoraOutlinedTextField(
                     value = email,
-                    onValueChange = { email = it },
+                    onValueChange = { viewModel.onEmailChanged(it) },
                     label = { Text(stringResource(R.string.email)) },
                     placeholder = { Text(stringResource(R.string.example_email)) },
                     keyboardOptions = KeyboardOptions(
@@ -91,8 +90,10 @@ fun CreateAccountScreen(
                     ),
                     keyboardActions = KeyboardActions(
                         onDone = {
-                            if (isValid) onContinue(email.trim(), password)
-                            else focusManager.clearFocus()
+                            if (isValid) {
+                                onContinue(email.trim(), password)
+                            }
+                            focusManager.clearFocus()
                         }
                     ),
                     visualTransformation = PasswordVisualTransformation()
