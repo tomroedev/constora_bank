@@ -14,9 +14,13 @@ import com.example.constorabank.core.designsystem.ConstoraBankTheme
 @Composable
 fun ConstoraTextButton(
     @StringRes textRes: Int,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    enabled: Boolean = true
 ) {
-    TextButton(onClick = onClick) {
+    TextButton(
+        onClick = onClick,
+        enabled = enabled
+    ) {
         Text(
             stringResource(textRes),
             style = MaterialTheme.typography.headlineSmall,
@@ -30,6 +34,9 @@ fun ConstoraTextButton(
 @Composable
 private fun ConstoraTextButtonPreview() {
     ConstoraBankTheme {
-        ConstoraTextButton(textRes = R.string.sign_in) {}
+        ConstoraTextButton(
+            textRes = R.string.sign_in,
+            onClick = {}
+        )
     }
 }

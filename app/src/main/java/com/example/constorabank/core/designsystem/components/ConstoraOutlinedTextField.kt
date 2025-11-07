@@ -18,10 +18,11 @@ fun ConstoraOutlinedTextField(
     onValueChange: (String) -> Unit,
     label: @Composable () -> Unit,
     placeholder: @Composable () -> Unit,
+    enabled: Boolean = true,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
     visualTransformation: VisualTransformation = VisualTransformation.None
-    ) {
+) {
     OutlinedTextField(
         modifier = Modifier.fillMaxWidth(),
         value = value,
@@ -29,6 +30,7 @@ fun ConstoraOutlinedTextField(
         label = label,
         placeholder = placeholder,
         singleLine = true,
+        enabled = enabled,
         shape = RoundedCornerShape(Dimens.CornerRadius),
         keyboardOptions = keyboardOptions,
         keyboardActions = keyboardActions,

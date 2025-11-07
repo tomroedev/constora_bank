@@ -60,7 +60,7 @@ fun AppNavHost() {
         }
         composable(Destinations.CreateAccount) {
             CreateAccountScreen(
-                onContinue = { _, _ -> nav.navigate(Destinations.VerifyEmail) },
+                onContinueSuccess = { nav.navigate(Destinations.Login)  },
                 onSignInClick = { nav.navigate(Destinations.Login) }
             )
         }
@@ -75,11 +75,11 @@ fun AppNavHost() {
 object Destinations {
     const val Welcome = "welcome"
     const val CreateAccount = "create_account"
-    const val VerifyEmail = "verify_email"
+    const val Login = "login"
+    /*const val VerifyEmail = "verify_email"
     const val SetPin = "set_pin"
     const val QuickUnlock = "quick_unlock"
-    const val Login = "login"
     const val Home = "home"
     const val TransferFunds = "transfer_funds"
-    const val TransferComplete = "transfer_complete"
+    const val TransferComplete = "transfer_complete"*/
 }

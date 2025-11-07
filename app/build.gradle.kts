@@ -5,7 +5,7 @@ plugins {
     alias(libs.plugins.dagger.hilt)
     alias(libs.plugins.devtools.ksp)
     alias(libs.plugins.kotlin.kapt)
-
+    alias(libs.plugins.google.services)
 }
 
 android {
@@ -66,6 +66,7 @@ dependencies {
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
+    implementation(libs.firebase.auth)
     implementation(libs.hilt.android)
     implementation(platform(libs.androidx.compose.bom))
     kapt(libs.hilt.compiler)
