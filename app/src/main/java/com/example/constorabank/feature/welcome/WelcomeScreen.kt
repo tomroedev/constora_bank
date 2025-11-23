@@ -24,7 +24,7 @@ import com.example.constorabank.core.designsystem.components.ConstoraPage
 @Composable
 fun WelcomeScreen(
     onCreateAccount: () -> Unit,
-    onLogin: () -> Unit,
+    onSignIn: () -> Unit,
 ) {
     ConstoraBankTheme {
         ConstoraPage {
@@ -65,7 +65,7 @@ fun WelcomeScreen(
                 Spacer(Modifier.height(Dimens.SpacerSmall))
 
                 ConstoraButton(
-                    onClick = onLogin,
+                    onClick = onSignIn,
                     text = R.string.i_already_have_an_account,
                     filled = false
                 )
@@ -77,5 +77,5 @@ fun WelcomeScreen(
 @Preview(showBackground = true)
 @Composable
 private fun WelcomePreview() {
-    WelcomeScreen(onCreateAccount = {}, onLogin = {})
+    WelcomeScreen(onCreateAccount = {}, onSignIn = {})
 }

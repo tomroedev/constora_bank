@@ -35,7 +35,7 @@ fun ConstoraTextButton(
 private fun ConstoraTextButtonPreview() {
     ConstoraBankTheme {
         ConstoraTextButton(
-            textRes = R.string.sign_in,
+            textRes = R.string.preview_text,
             onClick = {}
         )
     }

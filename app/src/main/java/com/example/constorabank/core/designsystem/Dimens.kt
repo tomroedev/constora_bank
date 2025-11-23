@@ -6,6 +6,7 @@ object Dimens {
     // Padding
     val PaddingXXL = 128.dp
     val PaddingMedium = 32.dp
+    val PaddingSmall = 16.dp
 
     // Spacing
     val SpacerMedium = 24.dp
@@ -14,6 +15,9 @@ object Dimens {
 
     // Corner radius
     val CornerRadius = 16.dp
+
+    // Borders
+    val BorderStrokeWidth = 1.dp
 
     // Buttons
     val ButtonHeight = 56.dp

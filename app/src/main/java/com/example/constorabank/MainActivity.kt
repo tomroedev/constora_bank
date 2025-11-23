@@ -5,18 +5,18 @@ import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.graphics.toArgb
-import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.constorabank.core.designsystem.ConstoraBankTheme
 import com.example.constorabank.feature.createaccount.CreateAccountScreen
-import com.example.constorabank.feature.login.LoginScreen
+import com.example.constorabank.feature.home.HomeScreen
+import com.example.constorabank.feature.signin.SignInScreen
+import com.example.constorabank.feature.transferfunds.TransferFundsScreen
 import com.example.constorabank.feature.welcome.WelcomeScreen
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -55,19 +55,27 @@ fun AppNavHost() {
         composable(Destinations.Welcome) {
             WelcomeScreen(
                 onCreateAccount = { nav.navigate(Destinations.CreateAccount) },
-                onLogin = { nav.navigate(Destinations.Login) }
+                onSignIn = { nav.navigate(Destinations.SignIn) }
             )
         }
         composable(Destinations.CreateAccount) {
             CreateAccountScreen(
-                onContinueSuccess = { nav.navigate(Destinations.Login)  },
-                onSignInClick = { nav.navigate(Destinations.Login) }
+                onContinueSuccess = { nav.navigate(Destinations.SignIn) },
+                onSignInClick = { nav.navigate(Destinations.SignIn) }
             )
         }
-        composable(Destinations.Login) {
-            LoginScreen(
-                paddingValues = PaddingValues(32.dp)
+        composable(Destinations.SignIn) {
+            SignInScreen(
+                onContinueSuccess = { nav.navigate(Destinations.Home) }
             )
+        }
+        composable(Destinations.Home) {
+            HomeScreen(
+                onTransferFundsClick = { nav.navigate((Destinations.TransferFunds)) }
+            )
+        }
+        composable(Destinations.TransferFunds) {
+            TransferFundsScreen()
         }
     }
 }
@@ -75,11 +83,7 @@ fun AppNavHost() {
 object Destinations {
     const val Welcome = "welcome"
     const val CreateAccount = "create_account"
-    const val Login = "login"
-    /*const val VerifyEmail = "verify_email"
-    const val SetPin = "set_pin"
-    const val QuickUnlock = "quick_unlock"
+    const val SignIn = "sign_in"
     const val Home = "home"
     const val TransferFunds = "transfer_funds"
-    const val TransferComplete = "transfer_complete"*/
 }

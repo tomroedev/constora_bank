@@ -13,7 +13,7 @@ import com.example.constorabank.core.designsystem.ConstoraBankTheme
 import com.example.constorabank.core.designsystem.Dimens
 
 @Composable
-fun ConstoraOutlinedTextField(
+fun ConstoraCredentialOutlinedTextField(
     value: String,
     onValueChange: (String) -> Unit,
     label: @Composable () -> Unit,
@@ -40,9 +40,9 @@ fun ConstoraOutlinedTextField(
 
 @Preview(showBackground = true)
 @Composable
-fun ConstoraOutlinedTextFieldPreview() {
+fun ConstoraCredentialOutlinedTextFieldPreview() {
     ConstoraBankTheme {
-        ConstoraOutlinedTextField(
+        ConstoraCredentialOutlinedTextField(
             value = "Some sample text",
             onValueChange = {},
             label = {},

@@ -16,17 +16,16 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.example.constorabank.R
 import com.example.constorabank.core.designsystem.ConstoraBankTheme
 import com.example.constorabank.core.designsystem.Dimens
-import com.example.constorabank.core.designsystem.Secondary700
 
 private const val DISABLED_CONTAINER_ALPHA = 0.8f
 
 @Composable
 fun ConstoraButton(
     onClick: () -> Unit,
-    @StringRes text:  Int,
+    @StringRes text: Int,
     enabled: Boolean = true,
     filled: Boolean = true
-    ) {
+) {
     Button(
         modifier = Modifier
             .fillMaxWidth()
@@ -36,16 +35,17 @@ fun ConstoraButton(
         shape = RoundedCornerShape(Dimens.CornerRadius),
         colors =
             ButtonDefaults.buttonColors(
-            containerColor =
-                if (filled) MaterialTheme.colorScheme.primary
-                else MaterialTheme.colorScheme.tertiary,
-            contentColor =
-                if (filled) MaterialTheme.colorScheme.onPrimary
-                else Secondary700,
-            disabledContainerColor =
-                if (filled) MaterialTheme.colorScheme.primary.copy(alpha = DISABLED_CONTAINER_ALPHA)
-                else MaterialTheme.colorScheme.tertiary.copy(alpha = DISABLED_CONTAINER_ALPHA)
-        ),
+                containerColor =
+                    if (filled) MaterialTheme.colorScheme.primary
+                    else MaterialTheme.colorScheme.tertiary,
+                disabledContainerColor =
+                    if (filled) MaterialTheme.colorScheme.primary.copy(alpha = DISABLED_CONTAINER_ALPHA)
+                    else MaterialTheme.colorScheme.tertiary.copy(alpha = DISABLED_CONTAINER_ALPHA),
+                contentColor =
+                    if (filled) MaterialTheme.colorScheme.onPrimary
+                    else MaterialTheme.colorScheme.onTertiary
+
+            ),
     ) {
         Text(
             text = stringResource(text),

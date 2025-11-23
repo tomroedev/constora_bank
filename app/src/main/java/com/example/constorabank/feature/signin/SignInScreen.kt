@@ -1,14 +1,12 @@
-package com.example.constorabank.feature.createaccount
+package com.example.constorabank.feature.signin
 
-import androidx.compose.foundation.layout.Arrangement
+import android.widget.Toast
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.AlertDialog
@@ -25,6 +23,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.stringResource
@@ -40,109 +39,83 @@ import com.example.constorabank.core.common.util.Validation
 import com.example.constorabank.core.designsystem.ConstoraBankTheme
 import com.example.constorabank.core.designsystem.Dimens
 import com.example.constorabank.core.designsystem.components.ConstoraButton
-import com.example.constorabank.core.designsystem.components.ConstoraExtraSmallPromptText
 import com.example.constorabank.core.designsystem.components.ConstoraCredentialOutlinedTextField
 import com.example.constorabank.core.designsystem.components.ConstoraPage
-import com.example.constorabank.core.designsystem.components.ConstoraSubtitleText
-import com.example.constorabank.core.designsystem.components.ConstoraTextButton
 import com.example.constorabank.core.designsystem.components.ConstoraTitleText
-import com.example.constorabank.domain.auth.RegistrationError
-import com.example.constorabank.domain.auth.RegistrationResult
+import com.example.constorabank.domain.auth.SignInError
+import com.example.constorabank.domain.auth.SignInResult
 
-/**
- * Create an account with an email address and password.
- * Email is stored and will persist for configuration changes etc.
- * Password is ephemeral for security.
- */
 @Composable
-fun CreateAccountScreen(
+fun SignInScreen(
     onContinueSuccess: () -> Unit,
-    onSignInClick: () -> Unit,
-    viewModel: CreateAccountViewModel = hiltViewModel()
+    viewModel: SignInViewModel = hiltViewModel()
 ) {
-    ConstoraBankTheme {
-        val email by viewModel.email.collectAsStateWithLifecycle()
-        var password by remember { mutableStateOf("") }
-        val isLoading by viewModel.isLoading.collectAsStateWithLifecycle()
-        val isValid = Validation.areCreateAccountCredentialsValid(email, password)
-        val focusManager = LocalFocusManager.current
-        var showSuccessDialog by rememberSaveable  { mutableStateOf(false) }
-        var showFailureDialog by rememberSaveable  { mutableStateOf(false) }
-        var registrationError by remember { mutableStateOf(RegistrationError.UNKNOWN.userMessage) }
+    val email by viewModel.email.collectAsStateWithLifecycle()
+    var password by remember { mutableStateOf("") }
+    val isLoading by viewModel.isLoading.collectAsStateWithLifecycle()
+    val isValid = Validation.areSignInDetailsValid(email, password)
+    val focusManager = LocalFocusManager.current
+    var showFailureDialog by rememberSaveable { mutableStateOf(false) }
+    var signInError by remember { mutableStateOf(SignInError.UNKNOWN.userMessage) }
 
-        LaunchedEffect(Unit) {
-            viewModel.registrationResult.collect { registrationResult ->
-                when (registrationResult) {
-                    is RegistrationResult.Success -> {
-                        showSuccessDialog = true
-                    }
-                    is RegistrationResult.Failure -> {
-                        registrationError = registrationResult.error.userMessage
-                        showFailureDialog = true
-                    }
+    val context = LocalContext.current
+
+    LaunchedEffect(Unit) {
+        viewModel.signInResult.collect { signInResult ->
+            when (signInResult) {
+                is SignInResult.Success -> {
+                    onContinueSuccess()
+                    Toast.makeText(context, context.getString(R.string.signed_in_successfully), Toast.LENGTH_LONG).show()
+                }
+
+                is SignInResult.Failure -> {
+                    signInError = signInResult.error.userMessage
+                    showFailureDialog = true
                 }
             }
         }
+    }
 
-        if (showSuccessDialog) {
-            AlertDialog(
-                onDismissRequest = { showSuccessDialog = false },
-                title = { Text(stringResource(R.string.success)) },
-                text = { Text(stringResource(R.string.your_account_has_been_created_successfully)) },
-                confirmButton = {
-                    TextButton(onClick = {
-                        showSuccessDialog = false
-                        onContinueSuccess()
-                    }) {
-                        Text(stringResource(R.string.sign_in))
-                    }
+    if (showFailureDialog) {
+        AlertDialog(
+            onDismissRequest = { showFailureDialog = false },
+            title = { Text(stringResource(R.string.signing_in_failed)) },
+            text = { Text(signInError) },
+            confirmButton = {
+                TextButton(onClick = { showFailureDialog = false }) {
+                    Text(stringResource(R.string.ok))
                 }
-            )
-        }
-
-        if (showFailureDialog) {
-            AlertDialog(
-                onDismissRequest = { showFailureDialog = false },
-                title = { Text(stringResource(R.string.account_creation_failed)) },
-                text = { Text(registrationError) },
-                confirmButton = {
-                    TextButton(onClick = { showFailureDialog = false }) {
-                        Text(stringResource(R.string.try_again))
-                    }
-                }
-            )
-        }
-
-        CreateAccountContent(
-            email = email,
-            onEmailChange = viewModel::onEmailChanged,
-            password = password,
-            onPasswordChange = { password = it },
-            isLoading = isLoading,
-            onContinue = {
-                if (isValid) {
-                    viewModel.createAccount(email, password)
-                    focusManager.clearFocus()
-                }
-            },
-            onSignInClick = onSignInClick,
-            isValid = isValid,
+            }
         )
     }
+
+    SignInContent(
+        email = email,
+        onEmailChange = viewModel::onEmailChanged,
+        password = password,
+        onPasswordChange = { password = it },
+        isLoading = isLoading,
+        onContinue = {
+            if (isValid) {
+                viewModel.signIn(email, password)
+                focusManager.clearFocus()
+            }
+        },
+        isValid = isValid,
+    )
 }
 
 /**
  * Extracted UI content so previews can render without needing a real ViewModel or DI.
  */
 @Composable
-fun CreateAccountContent(
+fun SignInContent(
     email: String,
     onEmailChange: (String) -> Unit,
     password: String,
     onPasswordChange: (String) -> Unit,
     isLoading: Boolean,
     onContinue: () -> Unit,
-    onSignInClick: () -> Unit,
     isValid: Boolean,
 ) {
     val focusManager = LocalFocusManager.current
@@ -154,11 +127,11 @@ fun CreateAccountContent(
                 .padding(top = Dimens.PaddingMedium),
             horizontalAlignment = Alignment.Start,
         ) {
-            ConstoraTitleText(R.string.create_account)
+            ConstoraTitleText(R.string.sign_in)
 
             Spacer(Modifier.height(Dimens.SpacerMedium))
 
-            // Email
+            // Email.
             ConstoraCredentialOutlinedTextField(
                 value = email,
                 onValueChange = onEmailChange,
@@ -176,7 +149,7 @@ fun CreateAccountContent(
 
             Spacer(Modifier.height(Dimens.SpacerSmall))
 
-            // Password
+            // Password.
             ConstoraCredentialOutlinedTextField(
                 value = password,
                 onValueChange = onPasswordChange,
@@ -196,45 +169,22 @@ fun CreateAccountContent(
                 visualTransformation = PasswordVisualTransformation()
             )
 
-            Spacer(Modifier.height(Dimens.SpacerSmall))
-
-            ConstoraExtraSmallPromptText(
-                text = R.string.password_requirements
-            )
-
             Spacer(Modifier.height(Dimens.SpacerMedium))
 
-            // Continue button
+            // Continue button.
             ConstoraButton(
                 onClick = onContinue,
                 text = R.string.continue_on,
                 enabled = isValid && !isLoading
             )
 
-            // Show loading text while signing up or in preview mode.
+            // Show loading text while signing in or in preview mode.
             if (isLoading || LocalInspectionMode.current) {
                 Spacer(Modifier.height(Dimens.SpacerSmall))
                 Text(
-                    text = stringResource(R.string.creating_account),
+                    text = stringResource(R.string.signing_in),
                     style = MaterialTheme.typography.bodyMedium,
                     fontStyle = FontStyle.Italic
-                )
-            }
-
-            Spacer(Modifier.height(Dimens.SpacerMedium))
-
-            // Option to sign in if they already have an account
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                ConstoraSubtitleText(R.string.already_have_an_account)
-                Spacer(Modifier.width(Dimens.SpacerXs))
-                ConstoraTextButton(
-                    textRes = R.string.sign_in,
-                    onClick = { onSignInClick() },
-                    enabled = !isLoading
                 )
             }
         }
@@ -243,15 +193,14 @@ fun CreateAccountContent(
 
 @Preview(showBackground = true)
 @Composable
-private fun CreateAccountPreview() {
+private fun SignInPreview() {
     ConstoraBankTheme {
-        CreateAccountContent(
+        SignInContent(
             email = "user@example.com",
             onEmailChange = {},
             password = "password",
             onPasswordChange = {},
             onContinue = {},
-            onSignInClick = {},
             isLoading = false,
             isValid = true,
         )

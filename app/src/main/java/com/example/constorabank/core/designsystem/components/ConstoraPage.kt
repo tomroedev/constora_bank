@@ -51,14 +51,14 @@ private fun ConstoraPagePreview() {
             ) {
                 ConstoraButton(
                     onClick = {} ,
-                    text = R.string.create_account
+                    text = R.string.preview_text
                 )
 
                 Spacer(Modifier.height(Dimens.SpacerSmall))
 
                 ConstoraButton(
                     onClick = {} ,
-                    text = R.string.i_already_have_an_account,
+                    text = R.string.preview_text,
                     filled = false
                 )
             }

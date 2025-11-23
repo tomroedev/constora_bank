@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">ConstoraBank</string>
-    <string name="login">Login</string>
     <string name="home">Home</string>
     <string name="create_account">Create Account</string>
     <string name="continue_on">Continue</string>
@@ -8,15 +7,28 @@
     <string name="example_email">you@example.com</string>
     <string name="password">password</string>
     <string name="placeholder_dots">••••••••</string>
-    <string name="password_requirements">8+ chars, mix upper/lower/number</string>
+    <string name="password_requirements">8+ chars, mix upper/lower/number/special</string>
     <string name="already_have_an_account">Already have an account?</string>
     <string name="sign_in">Sign in</string>
-    <string name="login_screen">Login Screen</string>
+    <string name="signing_in">Signing in</string>
+    <string name="signing_in_failed">Signing in failed</string>
+    <string name="sign_in_screen">Sign In Screen</string>
     <string name="welcome_to_constora">Welcome to Constora</string>
     <string name="welcome_screen_tagline">Modern banking, minus the faff.</string>
     <string name="i_already_have_an_account">I already have an account</string>
     <string name="preview_text">Some sample text</string>
+    <string name="preview_decimal_number">35.00</string>
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
     <string name="creating_account">Creating account…</string>
+    <string name="success">Success!</string>
+    <string name="your_account_has_been_created_successfully">Your account has been created successfully.</string>
+    <string name="account_creation_failed">Account creation failed</string>
+    <string name="try_again">Try again.</string>
+    <string name="transfer_funds">Transfer funds</string>
+    <string name="complete_transfer">Complete Transfer</string>
+    <string name="amount_to_transfer">Amount to transfer</string>
+    <string name="pound_symbol">£</string>
+    <string name="available_balance">Available balance</string>
+    <string name="signed_in_successfully">Signed in successfully</string>
 </resources>
