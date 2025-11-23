@@ -24,3 +24,4 @@ captures/
 *.hprof
 .vscode/
 *.log
+google-services.json

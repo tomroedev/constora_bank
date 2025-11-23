@@ -19,9 +19,6 @@ class CreateAccountViewModel @Inject constructor(
     private val createAccountUseCase: CreateAccountUseCase
 ) : ViewModel() {
 
-    private val emailRegex = Regex("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")
-    private val strongPasswordRegex = Regex("^(?=.*[a-z])(?=.*[A-Z])(?=.*[^A-Za-z0-9]).{8,}$")
-
     private val _email = MutableStateFlow("")
     val email: StateFlow<String> = _email
 
@@ -34,9 +31,6 @@ class CreateAccountViewModel @Inject constructor(
     fun onEmailChanged(newEmail: String) {
         _email.value = newEmail
     }
-
-    fun areCredentialsValid(email: String, password: String) =
-        emailRegex.matches(email) && strongPasswordRegex.matches(password)
 
     fun createAccount(email: String, password: String) {
         viewModelScope.launch {
