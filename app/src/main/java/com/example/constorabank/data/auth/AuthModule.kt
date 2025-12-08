@@ -1,6 +1,7 @@
 package com.example.constorabank.data.auth
 
 import com.example.constorabank.domain.auth.AuthRepository
+import com.example.constorabank.domain.auth.TokenProvider
 import com.google.firebase.auth.FirebaseAuth
 import dagger.Binds
 import dagger.Module
@@ -17,6 +18,12 @@ abstract class AuthModule {
     abstract fun bindAuthRepository(
         impl: FirebaseAuthRepository
     ): AuthRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindTokenProvider(
+        impl: FirebaseTokenProvider
+    ): TokenProvider
 
     companion object {
         @Provides

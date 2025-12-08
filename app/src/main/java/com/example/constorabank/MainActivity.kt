@@ -75,7 +75,9 @@ fun AppNavHost() {
             )
         }
         composable(Destinations.TransferFunds) {
-            TransferFundsScreen()
+            TransferFundsScreen(
+                returnToHomeScreen = { nav.navigate(Destinations.Home) },
+            )
         }
     }
 }

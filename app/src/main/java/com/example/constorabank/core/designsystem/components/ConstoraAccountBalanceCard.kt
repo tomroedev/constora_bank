@@ -74,7 +74,7 @@ fun ConstoraAccountBalanceCardPreview() {
     ConstoraBankTheme {
         ConstoraPage {
             ConstoraAccountBalanceCard(
-                value = stringResource(R.string.preview_decimal_number)
+                value = stringResource(R.string.preview_decimal)
             )
         }
     }

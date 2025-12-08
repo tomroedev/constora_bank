@@ -23,7 +23,7 @@ fun HomeScreen(
         Column(
             modifier = Modifier.padding(top = Dimens.PaddingXXL)
         ) {
-            ConstoraAccountBalanceCard(stringResource(R.string.preview_decimal_number))
+            ConstoraAccountBalanceCard(stringResource(R.string.preview_decimal))
 
             Spacer(Modifier.height(Dimens.SpacerMedium))
 

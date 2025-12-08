@@ -40,8 +40,8 @@ import com.example.constorabank.core.common.util.Validation
 import com.example.constorabank.core.designsystem.ConstoraBankTheme
 import com.example.constorabank.core.designsystem.Dimens
 import com.example.constorabank.core.designsystem.components.ConstoraButton
-import com.example.constorabank.core.designsystem.components.ConstoraExtraSmallPromptText
 import com.example.constorabank.core.designsystem.components.ConstoraCredentialOutlinedTextField
+import com.example.constorabank.core.designsystem.components.ConstoraExtraSmallPromptText
 import com.example.constorabank.core.designsystem.components.ConstoraPage
 import com.example.constorabank.core.designsystem.components.ConstoraSubtitleText
 import com.example.constorabank.core.designsystem.components.ConstoraTextButton
@@ -60,75 +60,73 @@ fun CreateAccountScreen(
     onSignInClick: () -> Unit,
     viewModel: CreateAccountViewModel = hiltViewModel()
 ) {
-    ConstoraBankTheme {
-        val email by viewModel.email.collectAsStateWithLifecycle()
-        var password by remember { mutableStateOf("") }
-        val isLoading by viewModel.isLoading.collectAsStateWithLifecycle()
-        val isValid = Validation.areCreateAccountCredentialsValid(email, password)
-        val focusManager = LocalFocusManager.current
-        var showSuccessDialog by rememberSaveable  { mutableStateOf(false) }
-        var showFailureDialog by rememberSaveable  { mutableStateOf(false) }
-        var registrationError by remember { mutableStateOf(RegistrationError.UNKNOWN.userMessage) }
+    val email by viewModel.email.collectAsStateWithLifecycle()
+    var password by remember { mutableStateOf("") }
+    val isLoading by viewModel.isLoading.collectAsStateWithLifecycle()
+    val isValid = Validation.areCreateAccountCredentialsValid(email, password)
+    val focusManager = LocalFocusManager.current
+    var showSuccessDialog by rememberSaveable { mutableStateOf(false) }
+    var showFailureDialog by rememberSaveable { mutableStateOf(false) }
+    var registrationError by rememberSaveable { mutableStateOf(RegistrationError.UNKNOWN.userMessage) }
 
-        LaunchedEffect(Unit) {
-            viewModel.registrationResult.collect { registrationResult ->
-                when (registrationResult) {
-                    is RegistrationResult.Success -> {
-                        showSuccessDialog = true
-                    }
-                    is RegistrationResult.Failure -> {
-                        registrationError = registrationResult.error.userMessage
-                        showFailureDialog = true
-                    }
+    LaunchedEffect(Unit) {
+        viewModel.registrationResult.collect { registrationResult ->
+            when (registrationResult) {
+                is RegistrationResult.Success -> {
+                    showSuccessDialog = true
+                }
+                is RegistrationResult.Failure -> {
+                    registrationError = registrationResult.error.userMessage
+                    showFailureDialog = true
                 }
             }
         }
+    }
 
-        if (showSuccessDialog) {
-            AlertDialog(
-                onDismissRequest = { showSuccessDialog = false },
-                title = { Text(stringResource(R.string.success)) },
-                text = { Text(stringResource(R.string.your_account_has_been_created_successfully)) },
-                confirmButton = {
-                    TextButton(onClick = {
-                        showSuccessDialog = false
-                        onContinueSuccess()
-                    }) {
-                        Text(stringResource(R.string.sign_in))
-                    }
+    if (showSuccessDialog) {
+        AlertDialog(
+            onDismissRequest = { showSuccessDialog = false },
+            title = { Text(stringResource(R.string.success)) },
+            text = { Text(stringResource(R.string.your_account_has_been_created_successfully)) },
+            confirmButton = {
+                TextButton(onClick = {
+                    showSuccessDialog = false
+                    onContinueSuccess()
+                }) {
+                    Text(stringResource(R.string.sign_in))
                 }
-            )
-        }
-
-        if (showFailureDialog) {
-            AlertDialog(
-                onDismissRequest = { showFailureDialog = false },
-                title = { Text(stringResource(R.string.account_creation_failed)) },
-                text = { Text(registrationError) },
-                confirmButton = {
-                    TextButton(onClick = { showFailureDialog = false }) {
-                        Text(stringResource(R.string.try_again))
-                    }
-                }
-            )
-        }
-
-        CreateAccountContent(
-            email = email,
-            onEmailChange = viewModel::onEmailChanged,
-            password = password,
-            onPasswordChange = { password = it },
-            isLoading = isLoading,
-            onContinue = {
-                if (isValid) {
-                    viewModel.createAccount(email, password)
-                    focusManager.clearFocus()
-                }
-            },
-            onSignInClick = onSignInClick,
-            isValid = isValid,
+            }
         )
     }
+
+    if (showFailureDialog) {
+        AlertDialog(
+            onDismissRequest = { showFailureDialog = false },
+            title = { Text(stringResource(R.string.account_creation_failed)) },
+            text = { Text(registrationError) },
+            confirmButton = {
+                TextButton(onClick = { showFailureDialog = false }) {
+                    Text(stringResource(R.string.try_again))
+                }
+            }
+        )
+    }
+
+    CreateAccountContent(
+        email = email,
+        onEmailChange = viewModel::onEmailChanged,
+        password = password,
+        onPasswordChange = { password = it },
+        isLoading = isLoading,
+        onContinue = {
+            if (isValid) {
+                viewModel.createAccount(email, password)
+                focusManager.clearFocus()
+            }
+        },
+        onSignInClick = onSignInClick,
+        isValid = isValid,
+    )
 }
 
 /**

@@ -7,7 +7,7 @@ import javax.inject.Inject
 
 /**
  * Coordinates user-creation logic on a background thread.
- * The repository handles actual network / Firebase work.
+ * The repository handles actual work.
  */
 class CreateAccountUseCase @Inject constructor(
     private val repository: AuthRepository,

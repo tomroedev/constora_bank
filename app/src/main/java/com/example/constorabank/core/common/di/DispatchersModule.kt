@@ -8,6 +8,13 @@ import javax.inject.Qualifier
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 
+/**
+ * Reasons for using this instead of calling Dispatchers.IO directly:
+ *
+ * Testability  – We can swap Dispatchers.IO with a test dispatcher in unit tests.
+ * Decoupling   – Classes don't hardcode Dispatchers.IO; they receive it via constructor injection.
+ * Consistency  – Centralises dispatcher configuration in one place.
+ */
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
 annotation class IoDispatcher

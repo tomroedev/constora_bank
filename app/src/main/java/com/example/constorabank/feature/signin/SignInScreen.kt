@@ -56,7 +56,7 @@ fun SignInScreen(
     val isValid = Validation.areSignInDetailsValid(email, password)
     val focusManager = LocalFocusManager.current
     var showFailureDialog by rememberSaveable { mutableStateOf(false) }
-    var signInError by remember { mutableStateOf(SignInError.UNKNOWN.userMessage) }
+    var signInError by rememberSaveable { mutableStateOf(SignInError.UNKNOWN.userMessage) }
 
     val context = LocalContext.current
 

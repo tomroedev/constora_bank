@@ -26,50 +26,48 @@ fun WelcomeScreen(
     onCreateAccount: () -> Unit,
     onSignIn: () -> Unit,
 ) {
-    ConstoraBankTheme {
-        ConstoraPage {
-            Column(
+    ConstoraPage {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = Dimens.PaddingXXL),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Image(
+                painter = painterResource(R.drawable.logo_shield),
+                contentDescription = "Constora logo",
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = Dimens.PaddingXXL),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Image(
-                    painter = painterResource(R.drawable.logo_shield),
-                    contentDescription = "Constora logo",
-                    modifier = Modifier
-                        .size(Dimens.MainAppIcon)
-                )
+                    .size(Dimens.MainAppIcon)
+            )
 
-                Spacer(Modifier.height(Dimens.SpacerMedium))
+            Spacer(Modifier.height(Dimens.SpacerMedium))
 
-                Text(
-                    text = stringResource(R.string.welcome_to_constora),
-                    style = MaterialTheme.typography.displayLarge,
-                )
+            Text(
+                text = stringResource(R.string.welcome_to_constora),
+                style = MaterialTheme.typography.displayLarge,
+            )
 
-                Spacer(Modifier.height(Dimens.SpacerXs))
+            Spacer(Modifier.height(Dimens.SpacerXs))
 
-                Text(
-                    text = stringResource(R.string.welcome_screen_tagline),
-                    style = MaterialTheme.typography.bodyLarge
-                )
+            Text(
+                text = stringResource(R.string.welcome_screen_tagline),
+                style = MaterialTheme.typography.bodyLarge
+            )
 
-                Spacer(Modifier.height(Dimens.SpacerMedium))
+            Spacer(Modifier.height(Dimens.SpacerMedium))
 
-                ConstoraButton(
-                    onClick = onCreateAccount,
-                    text = R.string.create_account
-                )
+            ConstoraButton(
+                onClick = onCreateAccount,
+                text = R.string.create_account
+            )
 
-                Spacer(Modifier.height(Dimens.SpacerSmall))
+            Spacer(Modifier.height(Dimens.SpacerSmall))
 
-                ConstoraButton(
-                    onClick = onSignIn,
-                    text = R.string.i_already_have_an_account,
-                    filled = false
-                )
-            }
+            ConstoraButton(
+                onClick = onSignIn,
+                text = R.string.i_already_have_an_account,
+                filled = false
+            )
         }
     }
 }
@@ -77,5 +75,7 @@ fun WelcomeScreen(
 @Preview(showBackground = true)
 @Composable
 private fun WelcomePreview() {
-    WelcomeScreen(onCreateAccount = {}, onSignIn = {})
+    ConstoraBankTheme {
+        WelcomeScreen(onCreateAccount = {}, onSignIn = {})
+    }
 }
