@@ -1,71 +1,10 @@
 package com.example.constorabank.network
 
-import com.example.constorabank.core.common.util.L
-import com.squareup.moshi.Moshi
-import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
-import okhttp3.Interceptor
-import okhttp3.OkHttpClient
-import okhttp3.Response
-import retrofit2.Retrofit
-import retrofit2.converter.moshi.MoshiConverterFactory
-
-// Base URL for Supabase edge functions
-private const val BASE_URL = "https://esqzalsarannoiqlmgko.functions.supabase.co/"
-
-/**
- * Adds the Firebase ID token as the Authorization header for every request.
- * Edge functions use this token to authenticate the user.
- * This is instead of using/storing anon_key.
- */
-class FirebaseAuthInterceptor(
-    private val tokenProvider: () -> String?
-) : Interceptor {
-    /**
-     * OkHttp automatically calls intercept() for every network request made by Retrofit.
-     * We don’t call intercept() manually.
-     */
-    override fun intercept(chain: Interceptor.Chain): Response {
-        val originalRequest = chain.request()
-        val token = tokenProvider()
-
-        L.d(
-            "FirebaseAuthInterceptor: ${originalRequest.method} " +
-                    "${originalRequest.url} – token is ${if (token != null) "PRESENT" else "MISSING"}"
-        )
-
-        val newRequest = if (token != null) {
-            chain.request().newBuilder()
-                .addHeader("Authorization", "Bearer $token")
-                .build()
-        } else {
-            chain.request()
-        }
-
-        return chain.proceed(newRequest)
-    }
-}
-
 /**
  * Creates a Retrofit API instance for calling the debit-balance function.
  * Pass in a function to get the token rather than the token itself as tokens can go stale.
  */
 fun createDebitBalanceApi(
     tokenProvider: () -> String?
-): DebitBalanceApi {
-
-    val client = OkHttpClient.Builder()
-        .addInterceptor(FirebaseAuthInterceptor(tokenProvider))
-        .build()
-
-    val moshi = Moshi.Builder()
-        .add(KotlinJsonAdapterFactory())
-        .build()
-
-    val retrofit = Retrofit.Builder()
-        .baseUrl(BASE_URL)
-        .client(client)
-        .addConverterFactory(MoshiConverterFactory.create(moshi))
-        .build()
-
-    return retrofit.create(DebitBalanceApi::class.java)
-}
+): DebitBalanceApi =
+    createSupabaseRetrofit(tokenProvider).create(DebitBalanceApi::class.java)
