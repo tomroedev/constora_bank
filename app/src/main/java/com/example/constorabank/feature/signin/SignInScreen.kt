@@ -15,6 +15,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -53,7 +54,11 @@ fun SignInScreen(
     val email by viewModel.email.collectAsStateWithLifecycle()
     var password by remember { mutableStateOf("") }
     val isLoading by viewModel.isLoading.collectAsStateWithLifecycle()
-    val isValid = Validation.areSignInDetailsValid(email, password)
+    val isValid by remember(email, password) {
+        derivedStateOf {
+            Validation.areSignInDetailsValid(email, password)
+        }
+    }
     val focusManager = LocalFocusManager.current
     var showFailureDialog by rememberSaveable { mutableStateOf(false) }
     var signInError by rememberSaveable { mutableStateOf(SignInError.UNKNOWN.userMessage) }
@@ -105,9 +110,6 @@ fun SignInScreen(
     )
 }
 
-/**
- * Extracted UI content so previews can render without needing a real ViewModel or DI.
- */
 @Composable
 fun SignInContent(
     email: String,
@@ -131,7 +133,7 @@ fun SignInContent(
 
             Spacer(Modifier.height(Dimens.SpacerMedium))
 
-            // Email.
+            // Email
             ConstoraCredentialOutlinedTextField(
                 value = email,
                 onValueChange = onEmailChange,
@@ -149,7 +151,7 @@ fun SignInContent(
 
             Spacer(Modifier.height(Dimens.SpacerSmall))
 
-            // Password.
+            // Password
             ConstoraCredentialOutlinedTextField(
                 value = password,
                 onValueChange = onPasswordChange,
@@ -171,14 +173,14 @@ fun SignInContent(
 
             Spacer(Modifier.height(Dimens.SpacerMedium))
 
-            // Continue button.
+            // Continue button
             ConstoraButton(
                 onClick = onContinue,
                 text = R.string.continue_on,
                 enabled = isValid && !isLoading
             )
 
-            // Show loading text while signing in or in preview mode.
+            // Show loading text while signing in or in preview mode
             if (isLoading || LocalInspectionMode.current) {
                 Spacer(Modifier.height(Dimens.SpacerSmall))
                 Text(

@@ -7,6 +7,11 @@ object Validation {
     fun isEmailValid(email: String) =
         emailRegex.matches(email)
 
+    /**
+     * Checks the email against a regex.
+     * Only check if the password is blank here, as we may change the password regex for creating
+     * accounts in the future
+     */
     fun areSignInDetailsValid(email: String, password: String) =
         isEmailValid(email) && password.isNotBlank()
 

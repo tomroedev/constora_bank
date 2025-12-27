@@ -12,7 +12,7 @@ import javax.inject.Singleton
 
 @Singleton
 class SupabaseTransferFundsRepository @Inject constructor(
-    val tokenProvider: TokenProvider
+    private val tokenProvider: TokenProvider
 ) : TransferFundsRepository {
 
     private val api = createDebitBalanceApi(tokenProvider::getToken)
@@ -53,5 +53,3 @@ class SupabaseTransferFundsRepository @Inject constructor(
             else -> TransferFundsError.UNKNOWN_ERROR
         }
 }
-
-

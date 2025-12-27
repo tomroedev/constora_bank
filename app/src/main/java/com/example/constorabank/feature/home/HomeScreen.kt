@@ -5,11 +5,11 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.constorabank.R
 import com.example.constorabank.core.designsystem.ConstoraBankTheme
 import com.example.constorabank.core.designsystem.Dimens
@@ -22,8 +22,19 @@ fun HomeScreen(
     onTransferFundsClick: () -> Unit,
     viewModel: HomeViewModel = hiltViewModel()
 ) {
-    val balance by viewModel.balance.collectAsState()
+    val balance by viewModel.balance.collectAsStateWithLifecycle()
 
+    HomeScreenContent(
+        onTransferFundsClick = onTransferFundsClick,
+        balance = balance
+    )
+}
+
+@Composable
+fun HomeScreenContent(
+    onTransferFundsClick: () -> Unit,
+    balance: String
+) {
     ConstoraPage {
         Column(
             modifier = Modifier.padding(top = Dimens.PaddingXXL)
@@ -44,6 +55,6 @@ fun HomeScreen(
 @Composable
 private fun HomeScreenPreview() {
     ConstoraBankTheme {
-        HomeScreen({})
+        HomeScreenContent({}, "500")
     }
 }

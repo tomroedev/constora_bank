@@ -17,6 +17,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -63,7 +64,11 @@ fun CreateAccountScreen(
     val email by viewModel.email.collectAsStateWithLifecycle()
     var password by remember { mutableStateOf("") }
     val isLoading by viewModel.isLoading.collectAsStateWithLifecycle()
-    val isValid = Validation.areCreateAccountCredentialsValid(email, password)
+    val isValid by remember(email, password) {
+        derivedStateOf {
+            Validation.areCreateAccountCredentialsValid(email, password)
+        }
+    }
     val focusManager = LocalFocusManager.current
     var showSuccessDialog by rememberSaveable { mutableStateOf(false) }
     var showFailureDialog by rememberSaveable { mutableStateOf(false) }
@@ -129,9 +134,6 @@ fun CreateAccountScreen(
     )
 }
 
-/**
- * Extracted UI content so previews can render without needing a real ViewModel or DI.
- */
 @Composable
 fun CreateAccountContent(
     email: String,
@@ -209,7 +211,7 @@ fun CreateAccountContent(
                 enabled = isValid && !isLoading
             )
 
-            // Show loading text while signing up or in preview mode.
+            // Show loading text while signing up or in preview mode
             if (isLoading || LocalInspectionMode.current) {
                 Spacer(Modifier.height(Dimens.SpacerSmall))
                 Text(
