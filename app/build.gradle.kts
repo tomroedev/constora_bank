@@ -79,5 +79,7 @@ dependencies {
     implementation(platform(libs.androidx.compose.bom))
     kapt(libs.hilt.compiler)
     testImplementation(libs.junit)
+    testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.truth)
+    testImplementation(libs.turbine)
 }

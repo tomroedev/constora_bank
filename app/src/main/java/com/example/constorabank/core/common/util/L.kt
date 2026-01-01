@@ -35,19 +35,32 @@ object L {
         }
     }
 
+    private inline fun safeLog(block: () -> Unit) {
+        if (!BuildConfig.DEBUG) return
+        runCatching { block() }
+    }
+
     fun d(message: String?, throwable: Throwable? = null) {
-        if (BuildConfig.DEBUG) Log.d("AppLog", "[${getIdentifiers()}] ${message ?: "null"}", throwable)
+        safeLog {
+            Log.d("AppLog", "[${getIdentifiers()}] ${message ?: "null"}", throwable)
+        }
     }
 
     fun e(message: String?, throwable: Throwable? = null) {
-        if (BuildConfig.DEBUG) Log.e("AppLog", "[${getIdentifiers()}] ${message ?: "null"}", throwable)
+        safeLog {
+            Log.e("AppLog", "[${getIdentifiers()}] ${message ?: "null"}", throwable)
+        }
     }
 
     fun i(message: String?, throwable: Throwable? = null) {
-        if (BuildConfig.DEBUG) Log.i("AppLog", "[${getIdentifiers()}] ${message ?: "null"}", throwable)
+        safeLog {
+            Log.i("AppLog", "[${getIdentifiers()}] ${message ?: "null"}", throwable)
+        }
     }
 
     fun w(message: String?, throwable: Throwable? = null) {
-        if (BuildConfig.DEBUG) Log.w("AppLog", "[${getIdentifiers()}] ${message ?: "null"}", throwable)
+        safeLog {
+            Log.w("AppLog", "[${getIdentifiers()}] ${message ?: "null"}", throwable)
+        }
     }
 }
