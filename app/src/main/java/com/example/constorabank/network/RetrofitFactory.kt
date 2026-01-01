@@ -27,7 +27,7 @@ class FirebaseAuthInterceptor(
         val originalRequest = chain.request()
         val token = tokenProvider()
 
-        L.d(
+        L.i(
             "FirebaseAuthInterceptor: ${originalRequest.method} " +
                     "${originalRequest.url} – token is ${if (token != null) "PRESENT" else "MISSING"}"
         )

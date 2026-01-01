@@ -84,7 +84,6 @@ fun ConstoraTransferAmountTextInputPoundsOnly(
                     .focusRequester(focusRequester)
                     // Clear the initial "0" when the field gains focus so the user can start typing immediately.
                     .onFocusChanged { focusState ->
-                        L.d("onFocusChanged: focus: $focusState, pounds: $pounds")
                         if (focusState.isFocused && pounds == "0") {
                             onPoundsChange("")
                         }

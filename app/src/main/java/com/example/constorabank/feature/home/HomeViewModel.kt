@@ -35,7 +35,7 @@ class HomeViewModel @Inject constructor(
                         _balance.value = result.balance
                     }
                     is GetBalanceResult.Failure -> {
-                        L.d("getBalance(): error ${result.errorCode}")
+                        L.i("getBalance(): error ${result.errorCode}")
                         _balance.value = "Error"
                     }
                 }

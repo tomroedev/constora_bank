@@ -50,7 +50,7 @@ class TransferFundsViewModel @Inject constructor(
                 TransferFundsResult.Failure(TransferFundsError.UNKNOWN_ERROR)
             }
             _transferAPIResult.emit(result)
-            L.d("makeTransfer(): result: $result")
+            L.i("makeTransfer(): result: $result")
         }
     }
 }
