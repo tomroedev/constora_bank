@@ -19,7 +19,7 @@ class FirebaseTokenProvider @Inject constructor(
         }
 
         return try {
-            val result = Tasks.await(user.getIdToken(false))
+            val result = Tasks.await(user.getIdToken(false)) // false means do not force refresh
             val token = result.token
             if (token == null) {
                 L.e("FirebaseTokenProvider: Firebase returned null ID token")
@@ -32,9 +32,8 @@ class FirebaseTokenProvider @Inject constructor(
             L.e("FirebaseTokenProvider: Auth error getting ID token: ${e.message}")
             null
         } catch (e: CancellationException) {
-            // Just rethrow if you want cancellation to propagate
             L.e("FirebaseTokenProvider: Token request was cancelled: ${e.message}")
-            throw e
+            null
         } catch (e: Exception) {
             L.e("FirebaseTokenProvider: Unexpected error getting ID token: ${e.message}")
             null
