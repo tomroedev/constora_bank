@@ -14,6 +14,7 @@ import com.example.constorabank.core.designsystem.Dimens
 
 @Composable
 fun ConstoraCredentialOutlinedTextField(
+    modifier: Modifier = Modifier,
     value: String,
     onValueChange: (String) -> Unit,
     label: @Composable () -> Unit,
@@ -24,7 +25,7 @@ fun ConstoraCredentialOutlinedTextField(
     visualTransformation: VisualTransformation = VisualTransformation.None
 ) {
     OutlinedTextField(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth(),
         value = value,
         onValueChange = onValueChange,
         label = label,

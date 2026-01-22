@@ -21,13 +21,14 @@ private const val DISABLED_CONTAINER_ALPHA = 0.8f
 
 @Composable
 fun ConstoraButton(
+    modifier: Modifier = Modifier,
     onClick: () -> Unit,
     @StringRes text: Int,
     enabled: Boolean = true,
-    filled: Boolean = true
+    filled: Boolean = true,
 ) {
     Button(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .height(Dimens.ButtonHeight),
         onClick = onClick,

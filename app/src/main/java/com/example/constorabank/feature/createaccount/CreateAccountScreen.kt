@@ -28,6 +28,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalInspectionMode
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.input.ImeAction
@@ -160,6 +161,7 @@ fun CreateAccountContent(
 
             // Email
             ConstoraCredentialOutlinedTextField(
+                modifier = Modifier.testTag("create_account_email_field"),
                 value = email,
                 onValueChange = onEmailChange,
                 enabled = !isLoading,
@@ -178,6 +180,7 @@ fun CreateAccountContent(
 
             // Password
             ConstoraCredentialOutlinedTextField(
+                modifier = Modifier.testTag("create_account_password_field"),
                 value = password,
                 onValueChange = onPasswordChange,
                 enabled = !isLoading,
@@ -206,15 +209,17 @@ fun CreateAccountContent(
 
             // Continue button
             ConstoraButton(
+                modifier = Modifier.testTag("create_account_continue_button"),
                 onClick = onContinue,
                 text = R.string.continue_on,
-                enabled = isValid && !isLoading
+                enabled = isValid && !isLoading,
             )
 
             // Show loading text while signing up or in preview mode
             if (isLoading || LocalInspectionMode.current) {
                 Spacer(Modifier.height(Dimens.SpacerSmall))
                 Text(
+                    modifier = Modifier.testTag("create_account_loading_text"),
                     text = stringResource(R.string.creating_account),
                     style = MaterialTheme.typography.bodyMedium,
                     fontStyle = FontStyle.Italic
