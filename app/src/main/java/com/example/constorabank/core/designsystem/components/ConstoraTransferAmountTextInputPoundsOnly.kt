@@ -31,9 +31,7 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.constorabank.core.common.util.L
 import com.example.constorabank.core.designsystem.Dimens
-import kotlinx.coroutines.launch
 
 @Composable
 fun ConstoraTransferAmountTextInputPoundsOnly(
@@ -54,12 +52,10 @@ fun ConstoraTransferAmountTextInputPoundsOnly(
             .fillMaxWidth()
             .clip(shape)
             .clickable {
-                coroutineScope.launch {
-                    // Clicking anywhere on the Surface gives the input focus and opens the keyboard
-                    focusManager.clearFocus(force = true)
-                    focusRequester.requestFocus()
-                    keyboardController?.show()
-                }
+                // Clicking anywhere on the Surface gives the input focus and opens the keyboard
+                focusManager.clearFocus(force = true)
+                focusRequester.requestFocus()
+                keyboardController?.show()
             },
         shape = shape,
         color = MaterialTheme.colorScheme.surface,
