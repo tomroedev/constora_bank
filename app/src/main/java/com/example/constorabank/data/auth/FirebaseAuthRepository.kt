@@ -35,6 +35,7 @@ class FirebaseAuthRepository @Inject constructor(
     }
 
     override suspend fun signIn(email: String, password: String): SignInResult {
+        L.i("Sign in with email: $email")
         return try {
             auth.signInWithEmailAndPassword(email, password).await()
             SignInResult.Success

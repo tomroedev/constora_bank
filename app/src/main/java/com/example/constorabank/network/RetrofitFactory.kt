@@ -47,10 +47,6 @@ class FirebaseAuthInterceptor(
     }
 }
 
-private val MOSHI: Moshi = Moshi.Builder()
-    .add(KotlinJsonAdapterFactory())
-    .build()
-
 fun createSupabaseRetrofit(
     tokenProvider: () -> String?
 ): Retrofit {
