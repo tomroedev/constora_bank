@@ -37,12 +37,16 @@ class FirebaseAuthInterceptor(
                 .header("Authorization", "Bearer $token")
                 .build()
         } else {
-            chain.request()
+            originalRequest
         }
 
         return chain.proceed(newRequest)
     }
 }
+
+private val MOSHI: Moshi = Moshi.Builder()
+    .add(KotlinJsonAdapterFactory())
+    .build()
 
 fun createSupabaseRetrofit(
     tokenProvider: () -> String?
@@ -51,13 +55,9 @@ fun createSupabaseRetrofit(
         .addInterceptor(FirebaseAuthInterceptor(tokenProvider))
         .build()
 
-    val moshi = Moshi.Builder()
-        .add(KotlinJsonAdapterFactory())
-        .build()
-
     return Retrofit.Builder()
         .baseUrl(SUPABASE_BASE_URL)
         .client(client)
-        .addConverterFactory(MoshiConverterFactory.create(moshi))
+        .addConverterFactory(MoshiConverterFactory.create(MOSHI))
         .build()
 }
