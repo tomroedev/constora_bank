@@ -10,6 +10,9 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
 private const val SUPABASE_BASE_URL = "https://esqzalsarannoiqlmgko.functions.supabase.co/"
+private val moshi: Moshi = Moshi.Builder()
+    .add(KotlinJsonAdapterFactory())
+    .build()
 
 /**
  * Adds the Firebase ID token as the Authorization header for every request.
@@ -58,6 +61,6 @@ fun createSupabaseRetrofit(
     return Retrofit.Builder()
         .baseUrl(SUPABASE_BASE_URL)
         .client(client)
-        .addConverterFactory(MoshiConverterFactory.create(MOSHI))
+        .addConverterFactory(MoshiConverterFactory.create(moshi))
         .build()
 }
